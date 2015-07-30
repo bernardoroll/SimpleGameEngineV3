@@ -22,6 +22,7 @@ public class SGEntity
 	private boolean				mIsActive = true;
 	protected PointF 			mPosition = new PointF();
 	private SGWorld 			mWorld;
+	private int					mFlags;
 	
 	public SGEntity(SGWorld world, int id, String category, PointF position, PointF dimensions) 
 	{
@@ -80,6 +81,27 @@ public class SGEntity
 	{ 
 		mPosition.set(position);		
 		_updateBoundingBox();
+	}
+	
+	public void addFlags(int flags) {
+		// Operacao OU bitwise entre o parametro e a propriedade.
+		// Por exemplo mFlags = 010 e flags = 100: o resultado é 110
+		mFlags |= flags;
+	}
+	
+	/**
+	 * Verifica se apenas uma flag existe. Nao se deve passar mais de uma flag
+	 * para esta verificacao.
+	 * @param flag
+	 * @return
+	 */
+	public boolean hasFlag(int flag) {
+		return (mFlags & flag) != 0;
+	}
+	
+	public void removeFlags(int flags) {
+		flags = ~flags;
+		mFlags &= flags;
 	}
 
 	private void _updateBoundingBox() 
